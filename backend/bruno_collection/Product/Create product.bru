@@ -1,0 +1,25 @@
+meta {
+  name: Create product
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8100/api/products
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Mountain Bike",
+    "category_id": 2,
+    "description": "The Mountain Bike is a strong.",
+    "pricing": 3000
+  }
+  
+  
+  
+  
+  
+}

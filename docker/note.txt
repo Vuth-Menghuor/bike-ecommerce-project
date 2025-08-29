@@ -1,0 +1,52 @@
+1. Pull & Start your Laravel Project instance
+
+Clone the initial code from github here: 
+https://github.com/thavorac/gic2024/tree/laravel-docker
+
+cd laravel-docker
+docker compose up -d
+docker compose exec -it app bash
+php artisan migrate 
+
+- Note: if error is try to php aritsan migrate please try: 
+
+check .env.example
+change .env.example to .env
+DB_HOST=db -> DB_HOST=mysql_db  
+CACHE_STORE=database -> CACHE_STORE=file
+php artisan migrate
+php artisan config:clear
+php artisan cache:clear
+php artisan route:clear
+php artisan view:clear
+
+> create migration file for table categories: 
+php artisan make:migration create_categories
+
+> create migration file for table products:
+php artisan make:migration create_products
+
+> Migrate 2 tables: 
+php artisan migrate
+
+> By default, routes/api.php is not yet created as Laravel consider stateless api is not usually needed to build a simple application so it is disabled.
+> We can enable it by simply run this command:
+php artisan install:api
+
+> create the CategoryController (if missing the controller): 
+php artisan make:controller CategoryController --api
+
+> Let's verify if you define your routes correctly, so go to app container and run this command:
+php artisan route:list
+
+> create the ProductController (if missing the controller): 
+php artisan make:controller ProductController --api
+
+> create model for Category and Product
+php artisan make:model Category
+php artisan make:model Product
+
+> Quick testing with artisan tinker: 
+php artisan tinker
+
+

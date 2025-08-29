@@ -1,0 +1,18 @@
+meta {
+  name: Create category
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8100/api/categories
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Vehicle",
+    "description": "A vehicle is a machine designed for transportation, typically self-propelled, used to carry people, cargo, or both."
+  }
+}
