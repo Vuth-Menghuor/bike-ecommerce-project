@@ -52,11 +52,11 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import { Icon } from '@iconify/vue'
 
 // --- Images ---
-import banner1 from '@/assets/images/banner_1.png'
-import banner2 from '@/assets/images/banner_2.png'
-import banner3 from '@/assets/images/banner_3.png'
-import banner4 from '@/assets/images/banner_4.png'
-import banner5 from '@/assets/images/banner_5.png'
+import banner1 from '@/assets/images/landing/banner_1.png'
+import banner2 from '@/assets/images/landing/banner_2.png'
+import banner3 from '@/assets/images/landing/banner_3.png'
+import banner4 from '@/assets/images/landing/banner_4.png'
+import banner5 from '@/assets/images/landing/banner_5.png'
 
 // --- Slideshow Data ---
 const backgroundImages = [banner1, banner2, banner3, banner4, banner5]

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
+import Guest_button from './guest_button.vue'
 </script>
 
 <template>
@@ -35,6 +36,7 @@ import { Icon } from '@iconify/vue'
       <!-- Submit Button -->
       <div class="button-wrapper">
         <button type="submit" class="submit-button">Sign In</button>
+        <Guest_button />
       </div>
       <!-- Divider -->
       <div class="form-divider">
@@ -68,7 +70,7 @@ import { Icon } from '@iconify/vue'
   background-color: transparent;
   height: 40px;
   border: 1px solid rgb(212, 212, 212);
-  border-radius: 10px;
+  border-radius: 6px;
   width: 185px;
   align-items: center;
   gap: 12px;
@@ -109,7 +111,10 @@ import { Icon } from '@iconify/vue'
 }
 .button-wrapper {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  gap: 12px;
   margin-top: 40px;
 }
 .submit-button {
@@ -120,6 +125,7 @@ import { Icon } from '@iconify/vue'
   margin-right: 20px;
   padding: 12px 0;
   border: none;
+  font-weight: 500;
   background-color: #14c9c9;
   color: white;
   font-size: 16px;
@@ -204,7 +210,7 @@ import { Icon } from '@iconify/vue'
   border: 1px solid rgb(202, 202, 202);
   border-radius: 20px;
   background-color: white;
-  height: 640px;
+  height: auto;
   width: 630px;
 }
 </style>

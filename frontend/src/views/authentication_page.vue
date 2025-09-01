@@ -10,7 +10,7 @@
 
       <!-- Illustration in Middle -->
       <div class="illustration">
-        <img src="@/assets/images/poster_login.png" alt="Cycling Illustration" />
+        <img src="@/assets/images/auth/poster_login.png" alt="Cycling Illustration" />
       </div>
 
       <!-- Content Below -->
@@ -25,7 +25,6 @@
 
     <!-- Right Side -->
     <div class="right-side">
-      <guest-button class="guest-btn" />
       <div class="form-wrapper">
         <component :is="currentForm" />
       </div>
@@ -34,7 +33,6 @@
 </template>
 
 <script>
-import GuestButton from '@/components/auth/guest_button.vue'
 import SignInForm from '@/components/auth/sign_in_form.vue'
 import SignUpForm from '@/components/auth/sign_up_form.vue'
 
@@ -42,7 +40,6 @@ export default {
   name: 'AuthenticationPage',
   props: ['type'],
   components: {
-    GuestButton,
     SignInForm,
     SignUpForm,
   },
