@@ -1,5 +1,7 @@
 <template>
-  <button class="guest-button">Continue as Guest</button>
+  <router-link to="/">
+    <button class="guest-button">Continue as Guest</button>
+  </router-link>
 </template>
 
 <style scoped>

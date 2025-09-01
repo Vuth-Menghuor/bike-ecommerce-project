@@ -129,9 +129,11 @@ onUnmounted(() => {
             <span class="cart-badge">3</span>
           </button>
           <div class="account-container">
-            <button class="user-account">
-              <Icon icon="mdi:user" class="account-icon" />
-            </button>
+            <router-link to="/authentication/sign_in">
+              <button class="user-account">
+                <Icon icon="mdi:user" class="account-icon" />
+              </button>
+            </router-link>
           </div>
         </div>
       </div>
