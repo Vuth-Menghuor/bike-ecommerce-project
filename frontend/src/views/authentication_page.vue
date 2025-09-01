@@ -4,7 +4,7 @@
     <div class="left-side">
       <!-- Logo on Top -->
       <div class="logo">
-        <img src="@/assets/images/logo.png" alt="Logo" />
+        <!-- <img src="@/assets/images/black_logo.png" alt="Logo" /> -->
         <label class="logo-name">MOTION CYCLE</label>
       </div>
 
@@ -60,6 +60,7 @@ export default {
   font-weight: 600;
   font-family: 'Poppins', sans-serif;
   color: black;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 .container {
   display: flex;
