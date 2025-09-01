@@ -4,7 +4,7 @@ services:
     container_name: app
     working_dir: /var/www
     volumes:
-      - ./backend:/var/www       # <-- use relative path to go up one folder
+      - ./backend:/var/www # <-- use relative path to go up one folder
       - ./php.ini:/usr/local/etc/php/php.ini
     networks:
       - backend
@@ -15,7 +15,7 @@ services:
     ports:
       - "8100:80"
     volumes:
-      - ./backend:/var/www       # <-- same here
+      - ./backend:/var/www # <-- same here
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
       - backend

@@ -1,3 +1,5 @@
+------------------------------------- Laravel with Docker -------------------------------------
+
 1. Pull & Start your Laravel Project instance
 
 Clone the initial code from github here: 
@@ -49,4 +51,13 @@ php artisan make:model Product
 > Quick testing with artisan tinker: 
 php artisan tinker
 
+
+
+------------------------------------- Git -------------------------------------
+
+> Add remote repository
+git remote add origin <url-repo>
+
+> Delete branch from the remote repository
+git push origin --delete <branch-name>
 
