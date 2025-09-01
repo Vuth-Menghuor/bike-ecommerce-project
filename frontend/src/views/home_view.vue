@@ -1,12 +1,14 @@
 <script>
 import Brand_carousel from '@/components/brand/brand_carousel.vue'
-import Navigation_bar from '@/components/layout/navigation_bar.vue'
+import Landing_page from '@/components/landing_page.vue'
+import Navigation_header from '@/components/navigation_header.vue'
 
 export default {
   name: 'HomeView',
   props: ['type'],
   components: {
-    Navigation_bar,
+    Navigation_header,
+    Landing_page,
     Brand_carousel,
   },
 }
@@ -14,7 +16,8 @@ export default {
 
 <template>
   <div>
-    <Navigation_bar />
+    <Navigation_header />
+    <Landing_page />
     <div>
       <label class="brand-list-title">Brand Lists</label>
       <Brand_carousel />
