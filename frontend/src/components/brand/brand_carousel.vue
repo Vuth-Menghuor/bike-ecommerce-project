@@ -46,7 +46,7 @@ const brands = [
 }
 .brand-carousel__container {
   overflow: hidden;
-  clip-path: polygon(0% 10%, 100% 0%, 100% 90%, 0% 100%);
+  /* clip-path: polygon(0% 10%, 100% 0%, 100% 90%, 0% 100%); */
 }
 .brand-carousel__track {
   display: flex;

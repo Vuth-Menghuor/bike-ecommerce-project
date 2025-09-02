@@ -2,6 +2,7 @@
 import Brand_carousel from '@/components/brand/brand_carousel.vue'
 import Landing_page from '@/components/landing_page.vue'
 import Navigation_header from '@/components/navigation_header.vue'
+import Popular_card from '@/components/popular_card.vue'
 
 export default {
   name: 'HomeView',
@@ -10,6 +11,7 @@ export default {
     Navigation_header,
     Landing_page,
     Brand_carousel,
+    Popular_card,
   },
 }
 </script>
@@ -22,10 +24,27 @@ export default {
       <label class="brand-list-title">Brand Lists</label>
       <Brand_carousel />
     </div>
+    <div class="content-title">
+      <label class="popular-list-title">Popular Products</label>
+    </div>
+    <Popular_card />
   </div>
 </template>
 
 <style scoped>
+.content-title {
+  display: flex;
+  justify-content: flex-start;
+  margin: 50px 160px 20px;
+  box-sizing: border-box;
+}
+
+.popular-list-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
 .brand-list-title {
   margin: 50px 0;
   display: flex;
