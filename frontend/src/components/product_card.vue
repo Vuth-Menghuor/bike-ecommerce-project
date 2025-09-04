@@ -1,6 +1,7 @@
 <script setup>
 import { Icon } from '@iconify/vue'
 import { ref, onMounted, onUnmounted, computed } from 'vue'
+import bike_filter from './bike_filter.vue'
 import bike1 from '@/assets/images/product_card/mount_1.png'
 import bike2 from '@/assets/images/product_card/mount_2.png'
 import bike3 from '@/assets/images/product_card/mount_3.png'
@@ -85,6 +86,7 @@ const bikes = ref([
     title: 'Giant TCR Advanced Pro 1',
     subtitle: 'Giant',
     price: 3799,
+    color: 'Black',
     badge: {},
     discount: {
       type: 'percent',
@@ -104,6 +106,7 @@ const bikes = ref([
     title: 'Specialized Allez Sprint Comp',
     subtitle: 'Specialized',
     price: 3299,
+    color: 'Blue',
     badge: {},
     discount: {
       type: 'fixed',
@@ -123,6 +126,7 @@ const bikes = ref([
     title: 'Cannondale Synapse Carbon Disc Ultegra',
     subtitle: 'Cannondale',
     price: 4199,
+    color: 'Red',
     badge: {
       text: 'New',
       icon: 'material-symbols-light:new-releases',
@@ -139,6 +143,62 @@ const bikes = ref([
     image: bike6,
   },
 ])
+
+// Filter state - now managed in parent
+const selectedPriceRange = ref('')
+const selectedColors = ref([])
+const selectedBrands = ref([])
+const selectedDiscountStatuses = ref([])
+const showFilters = ref(false)
+
+// Reference to the filter component to access priceRanges
+const bike_filters = ref(null)
+
+// Helper function to check if bike has discount
+const hasDiscount = (bike) => {
+  return bike.discount && (bike.discount.type === 'percent' || bike.discount.type === 'fixed')
+}
+
+// Filtered bikes computation
+const filteredBikes = computed(() => {
+  return bikes.value.filter((bike) => {
+    const discountedPrice = getDiscountedPrice(bike)
+
+    // Price filter
+    if (selectedPriceRange.value && bike_filters.value) {
+      const range = bike_filters.value.priceRanges.find((r) => r.label === selectedPriceRange.value)
+      if (range && (discountedPrice < range.min || discountedPrice > range.max)) {
+        return false
+      }
+    }
+
+    // Discount status filter
+    if (selectedDiscountStatuses.value.length > 0) {
+      const bikeHasDiscount = hasDiscount(bike)
+      const shouldShowDiscounted = selectedDiscountStatuses.value.includes('discounted')
+      const shouldShowRegular = selectedDiscountStatuses.value.includes('regular')
+
+      if (bikeHasDiscount && !shouldShowDiscounted) {
+        return false
+      }
+      if (!bikeHasDiscount && !shouldShowRegular) {
+        return false
+      }
+    }
+
+    // Color filter
+    if (selectedColors.value.length > 0 && !selectedColors.value.includes(bike.color)) {
+      return false
+    }
+
+    // Brand filter
+    if (selectedBrands.value.length > 0 && !selectedBrands.value.includes(bike.subtitle)) {
+      return false
+    }
+
+    return true
+  })
+})
 
 const favorites = ref(new Set())
 const visibleBikes = ref(new Set())
@@ -172,6 +232,14 @@ const getDiscountedPrice = (bike) => {
   }
 }
 
+// Handle filter events from child component
+const handleClearFilters = () => {
+  selectedPriceRange.value = ''
+  selectedColors.value = []
+  selectedBrands.value = []
+  selectedDiscountStatuses.value = []
+}
+
 let observer
 
 onMounted(() => {
@@ -200,93 +268,223 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="bikes-container">
-    <div v-for="bike in bikes" :key="bike.id" class="product-card" :data-id="bike.id">
-      <div class="card-header">
-        <div class="sale-badge" :style="{ background: bike.badge.gradient }">
-          <Icon :icon="bike.badge.icon" class="sale-icon" />
-          <span>{{ bike.badge.text }}</span>
+  <div class="main-container">
+    <!-- Filter Toggle Button for Mobile -->
+    <div class="filter-toggle-container">
+      <button class="filter-toggle-btn" @click="showFilters = !showFilters">
+        <Icon icon="mdi:filter-variant" class="toggle-icon" />
+        <span>Filters</span>
+        <Icon :icon="showFilters ? 'mdi:chevron-up' : 'mdi:chevron-down'" class="toggle-icon" />
+      </button>
+    </div>
+
+    <div class="content-wrapper">
+      <!-- Use the separated filter component -->
+      <bike_filter
+        ref="bike_filters"
+        :bikes="bikes"
+        :show-filters="showFilters"
+        v-model:selected-price-range="selectedPriceRange"
+        v-model:selected-colors="selectedColors"
+        v-model:selected-brands="selectedBrands"
+        v-model:selected-discount-statuses="selectedDiscountStatuses"
+        @clear-filters="handleClearFilters"
+      />
+
+      <!-- Products Grid -->
+      <div class="products-section">
+        <div class="products-header">
+          <h2>Bikes ({{ filteredBikes.length }} results)</h2>
         </div>
-        <button
-          class="favorite-btn"
-          :class="{ favorited: isFavorited(bike.id) }"
-          @click="toggleFavorite(bike.id)"
-        >
-          <Icon
-            :icon="isFavorited(bike.id) ? 'solar:heart-bold' : 'solar:heart-linear'"
-            class="fav-icon"
-          />
-        </button>
-      </div>
 
-      <div class="product-image-container">
-        <div v-if="bike.discount" class="promotion-price">
-          <span>{{ getDiscountLabel(bike) }}</span>
-        </div>
-        <!-- <img
-          :src="bike.image"
-          alt="bikes-image-transparent"
-          class="product-image"
-          :class="{
-            'slide-in': visibleBikes.has(bike.id),
-            'slide-out': !visibleBikes.has(bike.id),
-          }"
-        /> -->
-        <img :src="bike.image" alt="bikes-image-transparent" class="product-image" />
-      </div>
+        <div class="bikes-container">
+          <div v-for="bike in filteredBikes" :key="bike.id" class="product-card" :data-id="bike.id">
+            <div class="card-header">
+              <div
+                class="sale-badge"
+                :style="{ background: bike.badge.gradient }"
+                v-if="bike.badge.text"
+              >
+                <Icon :icon="bike.badge.icon" class="sale-icon" />
+                <span>{{ bike.badge.text }}</span>
+              </div>
+              <button
+                class="favorite-btn"
+                :class="{ favorited: isFavorited(bike.id) }"
+                @click="toggleFavorite(bike.id)"
+              >
+                <Icon
+                  :icon="isFavorited(bike.id) ? 'solar:heart-bold' : 'solar:heart-linear'"
+                  class="fav-icon"
+                />
+              </button>
+            </div>
 
-      <div class="price-info">
-        <label class="product-price discounted"
-          >${{ formatNumber(getDiscountedPrice(bike)) }}</label
-        >
-        <span v-if="bike.discount" class="original-price">${{ formatNumber(bike.price) }}</span>
-      </div>
+            <div class="product-image-container">
+              <div v-if="bike.discount" class="promotion-price">
+                <span>{{ getDiscountLabel(bike) }}</span>
+              </div>
+              <img :src="bike.image" alt="bikes-image-transparent" class="product-image" />
+            </div>
 
-      <div class="product-info">
-        <label class="product-title">{{ bike.title }}<br /></label>
-        <div class="subtitle-color">
-          <span class="product-subtitle">{{ bike.subtitle }}</span>
-          <span class="separator">|</span>
-          <span class="product-color">Color {{ bike.color }}</span>
-        </div>
-      </div>
+            <div class="price-info">
+              <label class="product-price discounted"
+                >${{ formatNumber(getDiscountedPrice(bike)) }}</label
+              >
+              <span v-if="bike.discount" class="original-price"
+                >${{ formatNumber(bike.price) }}</span
+              >
+            </div>
 
-      <div class="rating-section">
-        <div class="stars">
-          <span
-            v-for="star in stars"
-            :key="star"
-            class="star"
-            :class="{ filled: star <= Math.floor(bike.rating) }"
-          >
-            <Icon icon="line-md:star-filled" />
-          </span>
-        </div>
-        <span class="rating-text"> ({{ bike.rating }}) {{ formatNumber(bike.reviewCount) }} </span>
-      </div>
+            <div class="product-info">
+              <label class="product-title">{{ bike.title }}<br /></label>
+              <div class="subtitle-color">
+                <span class="product-subtitle">{{ bike.subtitle }}</span>
+                <span class="separator">|</span>
+                <span class="product-color">Color {{ bike.color }}</span>
+              </div>
+            </div>
 
-      <div class="product-specs">
-        <div v-for="spec in bike.specs" :key="spec.label" class="spec-item">
-          <div class="spec-content">
-            <span class="spec-text">{{ spec.text }}</span>
+            <div class="rating-section">
+              <div class="stars">
+                <span
+                  v-for="star in stars"
+                  :key="star"
+                  class="star"
+                  :class="{ filled: star <= Math.floor(bike.rating) }"
+                >
+                  <Icon icon="line-md:star-filled" />
+                </span>
+              </div>
+              <span class="rating-text">
+                ({{ bike.rating }}) {{ formatNumber(bike.reviewCount) }}
+              </span>
+            </div>
+
+            <div class="product-specs">
+              <div v-for="spec in bike.specs" :key="spec.label" class="spec-item">
+                <div class="spec-content">
+                  <span class="spec-text">{{ spec.text }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-footer">
+              <button class="view-detail-btn">
+                <span class="detail" :style="{ background: bike.bgPrice }">View Details</span>
+              </button>
+              <button class="quick-buy-btn" :style="{ background: bike.bgBtn }">
+                <Icon icon="fa7-solid:cart-arrow-down" />
+                <span>Add To Cart</span>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="card-footer">
-        <button class="view-detail-btn">
-          <span class="detail" :style="{ background: bike.bgPrice }">View Details</span>
-        </button>
-        <button class="quick-buy-btn" :style="{ background: bike.bgBtn }">
-          <Icon icon="fa7-solid:cart-arrow-down" />
-          <span>Add To Cart</span>
-        </button>
+        <!-- No Results Message -->
+        <div v-if="filteredBikes.length === 0" class="no-results">
+          <Icon icon="mdi:magnify-close" class="no-results-icon" />
+          <h3>No bikes found</h3>
+          <p>Try adjusting your filters to see more results.</p>
+          <button class="clear-filters-btn" @click="handleClearFilters">Clear All Filters</button>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.main-container {
+  width: 100%;
+  font-family: 'Poppins', sans-serif;
+}
+
+.filter-toggle-container {
+  display: none;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.filter-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 12px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.filter-toggle-btn:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.toggle-icon {
+  margin-left: auto;
+}
+
+.content-wrapper {
+  display: flex;
+  gap: 24px;
+  max-width: 2000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+.clear-filters-btn {
+  background: none;
+  border: none;
+  color: #6366f1;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.clear-filters-btn:hover {
+  background: #f0f0ff;
+}
+
+.products-section {
+  flex: 1;
+  min-width: 0;
+}
+.products-header {
+  margin-bottom: 24px;
+}
+.no-results {
+  text-align: center;
+  padding: 64px 32px;
+  color: #6b7280;
+}
+.no-results-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+.no-results h3 {
+  margin: 0 0 8px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #374151;
+}
+.no-results p {
+  margin: 0 0 24px 0;
+  font-size: 16px;
+}
+.products-header h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
 .subtitle-color {
   display: flex;
   align-items: center;
@@ -373,16 +571,10 @@ onUnmounted(() => {
 
 .bikes-container {
   display: flex;
-  gap: 34px;
+  gap: 24px;
   flex-wrap: wrap;
-  justify-content: center;
-  padding: 20px;
+  justify-content: start;
 }
-
-/* .product-card:hover .product-image.slide-in {
-  transform: scale(1.05) rotate(2deg);
-} */
-
 .sale-icon {
   font-size: 22px;
 }

@@ -249,7 +249,7 @@ onUnmounted(() => {
   border-radius: 50%;
   color: grey;
   background-color: white;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
 }
 .favorite-btn.favorited {
   background-color: #ffebef;
