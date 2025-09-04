@@ -215,7 +215,7 @@ onUnmounted(() => {
   color: white;
   padding: 6px 12px 6px 14px;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   clip-path: polygon(0 0, 95% 0, 100% 20%, 100% 80%, 95% 100%, 0 100%, 0% 80%, 0% 20%);
   gap: 4px;
   z-index: 10;
