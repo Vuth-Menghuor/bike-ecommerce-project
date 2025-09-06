@@ -4,6 +4,8 @@ defineProps({
 })
 </script>
 
+// Example: route path = /brand/:brand/product/:product
+
 <template>
   <div class="brand-page">
     <h1>Brand: {{ id }}</h1>
