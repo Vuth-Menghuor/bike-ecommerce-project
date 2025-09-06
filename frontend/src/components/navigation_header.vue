@@ -9,9 +9,9 @@ import { Icon } from '@iconify/vue'
         <!-- Logo & Menu -->
         <div class="brand-logo-wrapper">
           <Icon icon="ic:outline-menu" class="menu-icon" />
-          <div class="brand-logo">
+          <RouterLink to="/" class="brand-logo">
             <span class="brand-text">MOTION CYCLE</span>
-          </div>
+          </RouterLink>
         </div>
         <!-- Search Bar -->
         <div class="search-container">
@@ -42,28 +42,28 @@ import { Icon } from '@iconify/vue'
       <div class="brand-nav-container">
         <ul class="brand-list">
           <li class="brand-item">
-            <a href="/cannondale" class="brand-link">Cannondale</a>
+            <a href="/brands/cannondale" class="brand-link">Cannondale</a>
           </li>
           <li class="brand-item">
-            <a href="/trek" class="brand-link">Trek</a>
+            <a href="/brands/trek" class="brand-link">Trek</a>
           </li>
           <li class="brand-item">
-            <a href="/bianchi" class="brand-link">Bianchi</a>
+            <a href="/brands/bianchi" class="brand-link">Bianchi</a>
           </li>
           <li class="brand-item">
-            <a href="/giant" class="brand-link">Giant</a>
+            <a href="/brands/giant" class="brand-link">Giant</a>
           </li>
           <li class="brand-item">
-            <a href="/cervelo" class="brand-link">Cervélo</a>
+            <a href="/brands/cervelo" class="brand-link">Cervélo</a>
           </li>
           <li class="brand-item">
-            <a href="/colnago" class="brand-link">Colnago</a>
+            <a href="/brands/specialized" class="brand-link">Specialized</a>
           </li>
           <li class="brand-item">
-            <a href="/haro-bikes" class="brand-link">Haro Bikes</a>
+            <a href="/brands/shimano" class="brand-link">Shimano</a>
           </li>
           <li class="brand-item">
-            <a href="/shimano" class="brand-link">Shimano</a>
+            <a href="/brands/colnago" class="brand-link">Colnago</a>
           </li>
         </ul>
       </div>
@@ -73,11 +73,11 @@ import { Icon } from '@iconify/vue'
 
 <style scoped>
 .header-slideshow {
-  position: fixed; /* Make navigation fixed on top */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 999; /* Ensure it’s above everything */
+  z-index: 999;
   pointer-events: auto;
 }
 .account-container {
@@ -181,6 +181,8 @@ import { Icon } from '@iconify/vue'
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  text-decoration: none;
+  color: black;
 }
 
 .logo-image {
