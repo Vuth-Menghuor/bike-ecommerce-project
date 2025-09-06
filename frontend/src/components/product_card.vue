@@ -220,7 +220,7 @@ const getDiscountLabel = (bike) => {
   if (!bike.discount) return null
   return bike.discount.type === 'percent'
     ? `${bike.discount.value}% OFF`
-    : `-$${bike.discount.value.toLocaleString()} OFF`
+    : `-${bike.discount.value.toLocaleString()} OFF`
 }
 
 const getDiscountedPrice = (bike) => {
@@ -370,9 +370,10 @@ onUnmounted(() => {
             </div>
 
             <div class="card-footer">
-              <button class="view-detail-btn">
-                <span class="detail" :style="{ background: bike.bgPrice }">View Details</span>
-              </button>
+              <!-- Updated View Details button with router-link -->
+              <router-link :to="`/bike/${bike.id}`" class="view-detail-btn">
+                <span class="detail">View Details</span>
+              </router-link>
               <button class="quick-buy-btn" :style="{ background: bike.bgBtn }">
                 <Icon icon="fa7-solid:cart-arrow-down" />
                 <span>Add To Cart</span>
@@ -705,11 +706,6 @@ onUnmounted(() => {
   object-fit: cover; /* fill area while keeping ratio (may crop) */
   z-index: 2;
   position: relative;
-  /* opacity: 0; */
-  /* transform: translateY(50px);
-  transition:
-    transform 0.6s ease,
-    opacity 0.6s ease; */
   opacity: 1; /* always visible */
   transform: none; /* no translation */
   transition: none; /* remove animation */
@@ -743,6 +739,7 @@ onUnmounted(() => {
   gap: 16px;
 }
 
+/* Updated styles for the View Details router-link */
 .view-detail-btn {
   display: flex;
   align-items: center;
@@ -750,13 +747,21 @@ onUnmounted(() => {
   border: 1px solid #b8b8b8;
   color: black;
   background-color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.view-detail-btn:hover {
+  background-color: #f8f9fa;
+  border-color: #6c757d;
+  transform: translateY(-1px);
 }
 
 .detail {
   font-family: 'Poppins', sans-serif;
   font-size: 14px;
   font-weight: 500;
-  /* clip-path: polygon(5% 0, 95% 0, 100% 20%, 100% 80%, 95% 100%, 5% 100%, 0 80%, 0 20%); */
   padding: 10px 50px;
 }
 
@@ -772,8 +777,31 @@ onUnmounted(() => {
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  /* clip-path: polygon(5% 0, 95% 0, 100% 20%, 100% 80%, 95% 100%, 5% 100%, 0 80%, 0 20%); */
-  transition: background-color 0.3s ease;
+  border-radius: 6px;
+  transition: all 0.2s ease;
   flex-shrink: 0;
+}
+
+.quick-buy-btn:hover {
+  background: #b2ebf2;
+  transform: translateY(-1px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .filter-toggle-container {
+    display: block;
+  }
+
+  .card-footer {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .view-detail-btn,
+  .quick-buy-btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
 </style>
