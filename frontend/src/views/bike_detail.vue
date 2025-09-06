@@ -243,6 +243,9 @@ watch(
   display: flex;
   width: 100%;
   gap: 20px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 34px;
+  margin-bottom: 14px;
 }
 
 .bike-detail-container {
