@@ -76,6 +76,7 @@ const selectImage = (imageSrc) => {
   justify-content: center;
   background: white;
   border-radius: 12px;
+  border: 1px solid #e2e8f0;
 }
 
 .main-image img {
@@ -99,7 +100,7 @@ const selectImage = (imageSrc) => {
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 2px solid transparent;
+  border: 1px solid #e2e8f0;
 }
 
 .thumbnail-item:hover {
