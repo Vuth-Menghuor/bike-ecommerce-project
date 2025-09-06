@@ -34,12 +34,13 @@ const props = defineProps({
   list-style: none;
   padding: 0;
   gap: 5px;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .breadcrumb li::after {
   content: '>';
   margin: 0 5px;
+  transition: color 0.3s ease;
 }
 
 .breadcrumb li:last-child::after {
@@ -47,12 +48,24 @@ const props = defineProps({
 }
 
 .breadcrumb a {
-  color: #696969;
+  color: grey;
   text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.breadcrumb a:hover {
+  font-weight: 500;
+  color: #3491fa;
 }
 
 .breadcrumb li {
-  font-weight: 400;
-  color: #696969;
+  font-weight: 500;
+  color: grey;
+  transition: all 0.3s ease;
+}
+
+.breadcrumb li:hover {
+  font-weight: 500;
+  color: #3491fa;
 }
 </style>
